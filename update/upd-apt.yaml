@@ -1,7 +1,6 @@
 ---
 - name: Update and upgrade apt packages
   hosts: all 
-  become: yes  # This escalates privileges to root
   tasks:
     - name: Update packages with apt
       when: ansible_pkg_mgr == 'apt'
