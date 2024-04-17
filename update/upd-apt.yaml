@@ -1,10 +1,7 @@
----
-- name: Update and upgrade apt packages
-  hosts: all 
+- hosts: all
+  become: yes
   tasks:
-    - name: Update packages with apt
-      become: "{{ 'yes' if 'need_become' in group_names else 'no' }}"
-      when: ansible_pkg_mgr == 'apt'
-      apt:
+    - name: Update all apt packages
+      ansible.builtin.apt:
         update_cache: yes
-        upgrade: no
+        upgrade: 'yes'
