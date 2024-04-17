@@ -5,7 +5,7 @@
       ansible.builtin.shell: |
         #!/bin/bash
         # Define all hosts (space-separated list)
-        all_hosts="192.168.5.6 192.168.1.6"
+        all_hosts="192.168.5.6"
 
         # Function to update and upgrade packages using sudo
         update_and_upgrade() {
