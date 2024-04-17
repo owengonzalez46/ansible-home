@@ -1,7 +1,10 @@
 - hosts: all
   become: yes
   tasks:
-    - name: Update all apt packages
+    - name: Ensure apt cache is updated
       ansible.builtin.apt:
         update_cache: yes
-        upgrade: 'yes'
+
+    - name: Upgrade all apt packages
+      ansible.builtin.apt:
+        upgrade: dist
