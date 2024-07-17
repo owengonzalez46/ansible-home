@@ -1,14 +1,28 @@
 ---
 - name: Update and upgrade apt packages
   hosts: all
-
   tasks:
+    - name: Wait for package lock to be released
+      ansible.builtin.command: "sleep 10"
+      register: result
+      until: result.rc == 0
+      retries: 5
+      delay: 10
+
     - name: Update packages with apt
       when: ansible_pkg_mgr == 'apt'
       ansible.builtin.apt:
         update_cache: true
+      register: apt_update
+      until: apt_update is success
+      retries: 3
+      delay: 10
 
     - name: Upgrade packages with apt
       when: ansible_pkg_mgr == 'apt'
       ansible.builtin.apt:
         upgrade: dist
+      register: apt_upgrade
+      until: apt_upgrade is success
+      retries: 3
+      delay: 10
