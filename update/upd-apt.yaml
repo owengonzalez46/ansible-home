@@ -4,6 +4,32 @@
   become: true
 
   tasks:
+    - name: Ensure no other apt processes are running
+      ansible.builtin.command: "pkill -f apt"
+      ignore_errors: true
+
+    - name: Remove apt lists lock file
+      ansible.builtin.file:
+        path: /var/lib/apt/lists/lock
+        state: absent
+      ignore_errors: true
+
+    - name: Remove apt archive lock file
+      ansible.builtin.file:
+        path: /var/cache/apt/archives/lock
+        state: absent
+      ignore_errors: true
+
+    - name: Remove dpkg lock file
+      ansible.builtin.file:
+        path: /var/lib/dpkg/lock
+        state: absent
+      ignore_errors: true
+
+    - name: Reconfigure dpkg database
+      ansible.builtin.command: "dpkg --configure -a"
+      ignore_errors: true
+
     - name: Wait for package lock to be released
       ansible.builtin.command: "sleep 10"
       register: result
