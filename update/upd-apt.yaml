@@ -5,45 +5,6 @@
   become_method: sudo
 
   tasks:
-    - name: Ensure no other apt processes are running
-      ansible.builtin.command: "pkill -f apt"
-      ignore_errors: true
-      become: true
-
-    - name: Remove apt lists lock file
-      ansible.builtin.file:
-        path: /var/lib/apt/lists/lock
-        state: absent
-      ignore_errors: true
-      become: true
-
-    - name: Remove apt archive lock file
-      ansible.builtin.file:
-        path: /var/cache/apt/archives/lock
-        state: absent
-      ignore_errors: true
-      become: true
-
-    - name: Remove dpkg lock file
-      ansible.builtin.file:
-        path: /var/lib/dpkg/lock
-        state: absent
-      ignore_errors: true
-      become: true
-
-    - name: Reconfigure dpkg database
-      ansible.builtin.command: "dpkg --configure -a"
-      ignore_errors: true
-      become: true
-
-    - name: Wait for package lock to be released
-      ansible.builtin.command: "sleep 10"
-      register: result
-      until: result.rc == 0
-      retries: 5
-      delay: 10
-      become: true
-
     - name: Update packages with apt
       when: ansible_pkg_mgr == 'apt'
       ansible.builtin.apt:
