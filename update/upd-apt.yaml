@@ -1,6 +1,8 @@
 ---
 - name: Update and upgrade apt packages
   hosts: all
+  become: true
+
   tasks:
     - name: Wait for package lock to be released
       ansible.builtin.command: "sleep 10"
